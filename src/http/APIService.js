@@ -73,9 +73,6 @@ const API_URL = 'https://dannyjll.pythonanywhere.com'; /* 'http://localhost:8000
       const headers = {Authorization: `JWT ${jwtToken}`};
       return axios.delete(url, {headers: headers});
    }
-<<<<<<< HEAD
-   
-=======
    getStock(param_pk) {
     const url = `${API_URL}/api/stocks/${param_pk}`;
     let jwtToken = localStorage.getItem('access');
@@ -107,7 +104,6 @@ const headers = {Authorization: `JWT ${jwtToken}`};
 return axios.delete(url, {headers: headers});
 }
 
->>>>>>> e5bae6f (Fixed Frontend)
    authenticateLogin(credentials) {
       const url = `${API_URL}/api/`;
       return axios.post(url, credentials);

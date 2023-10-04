@@ -7,11 +7,8 @@ import CustomerCreate from '@/components/CustomerCreate'
 import MyCustomerList from '@/components/MyCustomerList'
 import InvestmentList from '@/components/InvestmentList'
 import InvestmentCreate from '@/components/InvestmentCreate'
-<<<<<<< HEAD
-=======
 import StockList from '@/components/StockList'
 import StockCreate from '@/components/StockCreate'
->>>>>>> e5bae6f (Fixed Frontend)
 
 const routes = [
   {
@@ -65,8 +62,6 @@ const routes = [
     component: InvestmentCreate
   },
   {
-<<<<<<< HEAD
-=======
     path: '/stock-list',
     name: 'StockList',
     component: StockList
@@ -87,7 +82,6 @@ const routes = [
     component: StockCreate
   },
   {
->>>>>>> e5bae6f (Fixed Frontend)
     path: '/auth',
     name: 'Auth',
     component: Auth
