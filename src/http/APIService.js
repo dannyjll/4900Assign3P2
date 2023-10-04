@@ -73,7 +73,41 @@ const API_URL = 'https://dannyjll.pythonanywhere.com'; /* 'http://localhost:8000
       const headers = {Authorization: `JWT ${jwtToken}`};
       return axios.delete(url, {headers: headers});
    }
+<<<<<<< HEAD
    
+=======
+   getStock(param_pk) {
+    const url = `${API_URL}/api/stocks/${param_pk}`;
+    let jwtToken = localStorage.getItem('access');
+    const headers = {Authorization: `JWT ${jwtToken}`};
+    return axios.get(url, {headers: headers});
+ }
+getStockList() {
+const url = `${API_URL}/api/stocks`;
+let jwtToken = localStorage.getItem('access');
+const headers = {Authorization: `JWT ${jwtToken}`};
+return axios.get(url,  {headers: headers});
+}
+addNewStock (stock){
+const url = `${API_URL}/api/stocks/`;
+let jwtToken = localStorage.getItem('access');
+const headers = {Authorization: `JWT ${jwtToken}`};
+return axios.post(url, stock, {headers: headers});
+} 
+updateStock(stock){
+const url = `${API_URL}/api/stocks/${stock.pk}`;
+let jwtToken = localStorage.getItem('access');
+const headers = {Authorization: `JWT ${jwtToken}`};
+return axios.put(url, stock, {headers: headers});
+} 
+deleteStock(stock_Pk){
+const url = `${API_URL}/api/stocks/${stock_Pk}`;
+let jwtToken = localStorage.getItem('access');
+const headers = {Authorization: `JWT ${jwtToken}`};
+return axios.delete(url, {headers: headers});
+}
+
+>>>>>>> e5bae6f (Fixed Frontend)
    authenticateLogin(credentials) {
       const url = `${API_URL}/api/`;
       return axios.post(url, credentials);

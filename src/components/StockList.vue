@@ -15,47 +15,46 @@
                 <div class="alert alert-success"
                      v-if="showMsg === 'new'"
                      :value="true">
-                    New Investment has been added.
+                    New Stock has been added.
                 </div>
                 <div class="alert alert-success"
                      v-if="showMsg === 'update'"
                      :value="true">
-                    Investment information has been updated.
+                    Stock information has been updated.
                 </div>
                 <div class="alert alert-success"
                      v-if="showMsg === 'deleted'"
                      :value="true">
-                    Selected investment has been deleted.
+                    Selected stock has been deleted.
                 </div>
             </div>
         </div>
         <!--Mobile device view-->
                <div class="d-md-none" id="collapsable-card" style="width: 80%">
-                <button type="button" class="btn btn-primary" @click="addNewInvestment">
+                <button type="button" class="btn btn-primary" @click="addNewStock">
                     <font-awesome-icon icon="plus"/>
                 </button>
-                <div class="card" v-for="investment in investments" v-bind:key="investment">
-                    <div class="card-header" :id="'heading' + investment.name">
-                        <button class="btn btn-link collapsed" data-bs-toggle="collapse" :data-bs-target="'#collapse' + investment.pk" 
-                        aria-expanded="true" :aria-controls="'collapse' + investment.pk">
-                            <h6 style="color: #0275d8; float: left">{{investment.category}}</h6>
+                <div class="card" v-for="stock in stocks" v-bind:key="stock">
+                    <div class="card-header" :id="'heading' + stock.name">
+                        <button class="btn btn-link collapsed" data-bs-toggle="collapse" :data-bs-target="'#collapse' + stock.pk" 
+                        aria-expanded="true" :aria-controls="'collapse' + stock.pk">
+                            <h6 style="color: #0275d8; float: left">{{stock.category}}</h6>
                         </button>
                     </div>
 
-                    <div :id="'collapse' + investment.pk" class="collapse" :aria-labelledby="'heading' + investment.pk" 
+                    <div :id="'collapse' + stock.pk" class="collapse" :aria-labelledby="'heading' + stock.pk" 
                     data-bs-parent="#collapsable-card">
                         <div class="card-body">
-                            <p><b>Customer:</b> {{investment.customer}}</p>
-                            <p><b>Category:</b> {{investment.category}}</p>
-                            <p><b>Description:</b> {{investment.description}}</p>
-                            <p><b>Acquired Date:</b> {{investment.acquired_date}}</p>
-                            <p><b>Acquired Value:</b> {{investment.acquired_value}}</p>
-                            <p><b>Recent Date:</b> {{investment.recent_date}}</p>
-                            <p><b>Recent Value:</b> {{investment.recent_value}}</p>
+                            <p><b>Customer:</b> {{stock.customer}}</p>
+                            <p><b>Symbol:</b> {{stock.symbol}}</p>
+                            <p><b>Name:</b> {{stock.name}}</p>
+                            <p><b>Shares:</b> {{stock.shares}}</p>
+                            <p><b>Purchase Price:</b> {{stock.purchase_price}}</p>
+                            <p><b>Purchase Date:</b> {{stock.purchase_date}}</p>
                             <div class="btn-group">
-                                <button  @click="updateInvestment(investment)" style="background-color: transparent; padding: 5;">
+                                <button  @click="updateStock(stock)" style="background-color: transparent; padding: 5;">
                                     <font-awesome-icon icon="pencil"/></button>
-                                <button @click="deleteInvestment(investment)" style="background-color: transparent; padding: 5;">
+                                <button @click="deleteStock(stock)" style="background-color: transparent; padding: 5;">
                                     <font-awesome-icon icon="trash"/></button>
                             </div>
                         </div>
@@ -69,35 +68,33 @@
                     <thead>
                     <tr>
                         <th scope="col">Customer #</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Acquired Value</th>
-                        <th scope="col">Acquired Date</th>
-                        <th scope="col">Recent Value</th>
-                        <th scope="col">Recent Date</th>
+                        <th scope="col">Symbol</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Shares</th>
+                        <th scope="col">Purchase Price</th>
+                        <th scope="col">Purchase Date</th>
                         <th scope="col">Update</th>
                         <th scope="col">Delete</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for = "investment in investments" v-bind:key="investment">
-                        <th scope="row">{{investment.cust_number}}</th>
-                        <td>{{investment.category}}</td>
-                        <td>{{investment.description}}</td>
-                        <td>${{investment.acquired_value}}</td>
-                        <td>{{investment.acquired_date}}</td>
-                        <td>${{investment.recent_value}}</td>
-                        <td>{{investment.recent_date}}</td>
-                        <td @click="updateInvestment(investment)"><button style="background-color: transparent; padding: 0;">
+                    <tr v-for = "stock in stocks" v-bind:key="stock">
+                        <th scope="row">{{stock.cust_number}}</th>
+                        <td>{{stock.symbol}}</td>
+                        <td>{{stock.name}}</td>
+                        <td>{{stock.shares}}</td>
+                        <td>${{stock.purchase_price}}</td>
+                        <td>{{stock.purchase_date}}</td>
+                        <td @click="updateStock(stock)"><button style="background-color: transparent; padding: 0;">
                             <font-awesome-icon icon="pencil"/></button>
                         </td>
-                        <td @click="deleteInvestment(investment)"><button style="background-color: transparent; padding: 0;">
+                        <td @click="deleteStock(stock)"><button style="background-color: transparent; padding: 0;">
                             <font-awesome-icon icon="trash"/></button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <button type="button" class="btn btn-primary" @click="addNewInvestment">Add New Investment</button>
+                <button type="button" class="btn btn-primary" @click="addNewStock">Add New Stock</button>
             </div>
         </div>
 </template>
@@ -107,11 +104,11 @@ import router from '../router';
 import {APIService} from '../http/APIService';
     const apiService = new APIService();
     export default {
-        name: "InvestmentList",
+        name: "StockList",
         data: () => ({
-            investments: [],
+            stocks: [],
             validUserName: "Guest",
-            investmentSize: 0,
+            stockSize: 0,
             showMsg: '',
             isMobile: false,
             authenticated: false,
@@ -129,7 +126,7 @@ import {APIService} from '../http/APIService';
         }),
         mounted() {
             this.authenticated = localStorage.getItem("isAuthenticated")
-            this.getInvestments();
+            this.getStocks();
             this.showMessages();
         },
         methods: {
@@ -144,10 +141,10 @@ import {APIService} from '../http/APIService';
                     this.showMsg = this.$route.params.msg;
                 }
             },
-            getInvestments() {
-                apiService.getInvestmentList().then(response => {
-                    this.investments = response.data.data;
-                    this.investmentSize = this.investments.length;
+            getStocks() {
+                apiService.getStockList().then(response => {
+                    this.stocks = response.data.data;
+                    this.stockSize = this.stocks.length;
                     if (localStorage.getItem("isAuthenticated")
                         && JSON.parse(localStorage.getItem("isAuthenticated")) === true) {
                         this.validUserName = JSON.parse(localStorage.getItem("log_user"));
@@ -159,23 +156,23 @@ import {APIService} from '../http/APIService';
                     }
                 });
             },
-            addNewInvestment() {
+            addNewStock() {
                 if (localStorage.getItem("isAuthenticated")
                     && JSON.parse(localStorage.getItem("isAuthenticated")) === true) {
-                    router.push('/investment-create');
+                    router.push('/stock-create');
                 } else {
                     router.push("/auth");
                 }
             },
-            updateInvestment(investment) {
-                router.push('/investment-create/' + investment.pk);
+            updateStock(stock) {
+                router.push('/stock-create/' + stock.pk);
             },
-            deleteInvestment(investment) {
+            deleteStock(stock) {
                 if(confirm("Do you really want to delete?")) {
-                    apiService.deleteInvestment(investment.pk).then(response => {
+                    apiService.deleteStock(stock.pk).then(response => {
                         if (response.status === 204) {
-                            router.push('/investment-list/deleted/')
-                            this.getInvestments()
+                            router.push('/stock-list/deleted/')
+                            this.getStocks()
                         }
                     }).catch(error => {
                         if (error.response.status === 401) {

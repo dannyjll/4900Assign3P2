@@ -6,7 +6,7 @@
             <div class="col col-12 col-sm-10 col-md-10 col-lg-6">
               <div class="alert alert-danger shadow" role="alert"
               v-if="showMsg === 'error'">
-                Please verify Investment Information
+                Please verify Stock Information
               </div>
             </div>
           </div>
@@ -20,50 +20,44 @@
                       <div class=" row justify-content-around py-2">
                         <label class="col-4">Customer</label>
                         <div class="col col-8">
-                          <select v-model="investment.customer" class="form-select">
+                          <select v-model="stock.customer" class="form-select">
                             <option class ="form-select form-select-sm " v-for=" item in list" :value="item.pk" :key="item.pk"> {{item.name}} </option>
                           </select>
                         </div>
                       </div>
                       <div class="form-group row justify-content-around py-2">
-                        <label class="col-4">Category</label>
+                        <label class="col-4">Symbol</label>
                         <div class="col col-8">
-                          <input v-model="investment.category" type="text" class="form-control-sm form-control">
+                          <input v-model="stock.symbol" type="text" class="form-control-sm form-control">
                         </div>
                       </div>          
                       <div class="form-group row justify-content-around py-2">
-                        <label class="col-4">Description</label>
+                        <label class="col-4">Name</label>
                         <div class="col col-8">
-                          <input v-model="investment.description" type="text" class="form-control-sm form-control">
+                          <input v-model="stock.name" type="text" class="form-control-sm form-control">
                         </div>
                       </div> 
                       <div class="form-group row justify-content-around py-2">
-                        <label class="col-4">Acquired Value</label>
+                        <label class="col-4">Shares</label>
                         <div class="col col-8">
-                          <input v-model="investment.acquired_value" type="number" class="form-control-sm form-control">
+                          <input v-model="stock.shares" type="number" class="form-control-sm form-control">
                         </div>
                       </div>   
                       <div class="form-group row justify-content-around py-2">
-                        <label class="col-4">Acquired Date</label>
+                        <label class="col-4">Purchase Price</label>
                         <div class="col col-8">
-                          <input v-model="investment.acquired_date" type="date" class="form-control-sm form-control">
+                          <input v-model="stock.purchase_price" type="number" class="form-control-sm form-control" >
                         </div>
                       </div>
                       <div class="form-group row justify-content-around py-2">
-                        <label class="col-4">Recent Value</label>
+                        <label class="col-4">Purchase Date</label>
                         <div class="col col-8">
-                          <input v-model="investment.recent_value" type="number" class="form-control-sm form-control">
-                        </div>
-                      </div>
-                       <div class="form-group row justify-content-around py-2">
-                        <label class="col-4">Recent Date</label>
-                        <div class="col col-8">
-                          <input v-model="investment.recent_date" type="date" class="form-control-sm form-control">
+                          <input v-model="stock.purchase_date" type="date" class="form-control-sm form-control">
                         </div>
                       </div>
                       <div class="row justify-content-around">
-                        <div v-if="!isUpdate" type="button" class="btn btn-primary col-4" @click="createInvestment">Save</div>
-                        <div v-if="isUpdate" type="button" class="btn btn-primary col-4" @click="updateInvestment">Update</div>
+                        <div v-if="!isUpdate" type="button" class="btn btn-primary col-4" @click="createStock">Save</div>
+                        <div v-if="isUpdate" type="button" class="btn btn-primary col-4" @click="updateStock">Update</div>
                         <div type="button" class="btn btn-secondary col-4" @click="cancelOperation">Cancel</div>   
                       </div>
                     </div>
@@ -83,7 +77,7 @@
     const apiService = new APIService();
    
     export default {
-      name: 'InvestmentCreate',
+      name: 'StockCreate',
       components: {},
                 //prevent user from accessing this page if not authorized
     beforeCreate() {
@@ -102,8 +96,8 @@
         return {
           customers: [],
           showError: false,
-          investment: {},
-          pageTitle: "Add New Investment",
+          stock: {},
+          pageTitle: "Add New Stock",
           isUpdate: false,
           showMsg: '',
           date: new Date(),
@@ -135,12 +129,12 @@
             }
           });
         },
-        createInvestment() {
-          apiService.addNewInvestment(this.investment).then(response => {
+        createStock() {
+          apiService.addNewStock(this.stock).then(response => {
             if (response.status === 201) {
-              this.investment = response.data;
+              this.stock = response.data;
                this.showMsg = "";
-              router.push('/investment-list/new');
+              router.push('/stock-list/new');
             }else{
                 this.showMsg = "error";
             }
@@ -153,13 +147,13 @@
           });
         },
         cancelOperation(){
-           router.push("/investment-list");
+           router.push("/stock-list");
         },
-        updateInvestment() {
-          apiService.updateInvestment(this.investment).then(response => {
+        updateStock() {
+          apiService.updateStock(this.stock).then(response => {
             if (response.status === 200) {
-              this.investment = response.data;
-              router.push('/investment-list/update');
+              this.stock = response.data;
+              router.push('/stock-list/update');
             }else{
                 this.showMsg = "error";
             }
@@ -175,10 +169,10 @@
       mounted() {
         this.getCustomers();
         if (this.$route.params.pk) {
-          this.pageTitle = "Edit Investment";
+          this.pageTitle = "Edit Stock";
           this.isUpdate = true;
-          apiService.getInvestment(this.$route.params.pk).then(response => {
-            this.investment = response.data;
+          apiService.getStock(this.$route.params.pk).then(response => {
+            this.stock = response.data;
           }).catch(error => {
             if (error.response.status === 401) {
               router.push("/auth");
