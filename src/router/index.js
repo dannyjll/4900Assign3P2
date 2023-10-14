@@ -27,6 +27,11 @@ const routes = [
     component: MyCustomerList
   },
   {
+    path: '/mycustomer-list/:msg',
+    name: 'MyCustomerUpdatedList',
+    component: MyCustomerList
+  },
+  {
     path: '/customer-list/:msg',
     name: 'CustomerUpdatedList',
     component: CustomerList
